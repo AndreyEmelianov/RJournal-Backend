@@ -6,12 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
-@Controller('post')
+@Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -26,13 +27,22 @@ export class PostController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const find = await this.postService.findOne(+id);
+    if (!find) {
+      throw new NotFoundException('Статья не найдена');
+    }
+    return find;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    const find = await this.postService.findOne(+id);
+    if (!find) {
+      throw new NotFoundException('Статья не найдена');
+    }
+
+    return await this.postService.update(+id, updatePostDto);
   }
 
   @Delete(':id')
