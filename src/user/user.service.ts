@@ -21,7 +21,7 @@ export class UserService {
     return this.repository.find();
   }
 
-  findById(id: number) {
+  findOne(id: number) {
     return this.repository.findOneBy({ id: id });
   }
 
