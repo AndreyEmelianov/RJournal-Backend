@@ -78,6 +78,9 @@ export class PostService {
     if (!find) {
       throw new NotFoundException('Статья не найдена');
     }
+
+    await this.repository.increment({ id }, 'views', 1);
+
     return find;
   }
 
