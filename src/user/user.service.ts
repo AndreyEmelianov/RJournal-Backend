@@ -33,10 +33,6 @@ export class UserService {
   }
 
   update(id: number, dto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.repository.update(id, dto);
   }
 }

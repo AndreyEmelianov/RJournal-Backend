@@ -44,7 +44,9 @@ export class AuthService {
         token: this.generateJwtToken(user),
       };
     } catch (err) {
-      throw new ForbiddenException('Ошибка при регистрации');
+      throw new ForbiddenException(
+        'Ошибка при регистрации, пользователь существует',
+      );
     }
   }
 }
