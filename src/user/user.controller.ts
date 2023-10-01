@@ -5,14 +5,14 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SearchUserDto } from './dto/search-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -29,14 +29,19 @@ export class UserController {
     return req.user;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
   @UseGuards(JwtAuthGuard)
   @Patch('me')
   update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+req.user.id, updateUserDto);
+  }
+
+  @Get('search')
+  search(@Query() dto: SearchUserDto) {
+    return this.userService.search(dto);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
   }
 }
