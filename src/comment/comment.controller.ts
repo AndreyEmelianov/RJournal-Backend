@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -25,8 +26,8 @@ export class CommentController {
   }
 
   @Get()
-  findAll() {
-    return this.commentService.findAll();
+  findAll(@Query() query: { postId?: string }) {
+    return this.commentService.findAll(+query.postId);
   }
 
   @Get(':id')

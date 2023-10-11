@@ -20,8 +20,24 @@ export class CommentService {
     });
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll(postId: number) {
+    const queryBuilder = await this.repository.createQueryBuilder('c');
+
+    if (postId) {
+      queryBuilder.where('c.postId = :postId', { postId });
+    }
+
+    const arr = await queryBuilder
+      .leftJoinAndSelect('c.post', 'post')
+      .leftJoinAndSelect('c.user', 'user')
+      .getMany();
+
+    return arr.map((obj) => {
+      return {
+        ...obj,
+        post: { id: obj.post.id },
+      };
+    });
   }
 
   findOne(id: number) {
