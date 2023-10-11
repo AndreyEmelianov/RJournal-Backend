@@ -12,11 +12,18 @@ export class CommentService {
     private repository: Repository<CommentEntity>,
   ) {}
 
-  create(dto: CreateCommentDto, userId: number) {
-    return this.repository.save({
+  async create(dto: CreateCommentDto, userId: number) {
+    const comment = await this.repository.save({
       text: dto.text,
       post: { id: dto.postId },
       user: { id: userId },
+    });
+
+    return this.repository.findOne({
+      where: {
+        id: comment.id,
+      },
+      relations: ['user'],
     });
   }
 
