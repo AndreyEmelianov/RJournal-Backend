@@ -10,14 +10,16 @@ import {
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { User } from '../decorators/user.decorator';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.create(createCommentDto);
+  create(@Body() createCommentDto: CreateCommentDto, @User() user: UserEntity) {
+    return this.commentService.create(createCommentDto, user.id);
   }
 
   @Get()

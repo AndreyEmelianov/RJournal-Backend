@@ -12,11 +12,11 @@ export class CommentService {
     private repository: Repository<CommentEntity>,
   ) {}
 
-  create(dto: CreateCommentDto) {
+  create(dto: CreateCommentDto, userId: number) {
     return this.repository.save({
       text: dto.text,
       post: { id: dto.postId },
-      user: { id: 1 }, //временно
+      user: { id: userId },
     });
   }
 

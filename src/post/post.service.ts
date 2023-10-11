@@ -42,6 +42,8 @@ export class PostService {
   async search(dto: SearchPostDto) {
     const queryBuilder = this.repository.createQueryBuilder('p');
 
+    queryBuilder.leftJoinAndSelect('p.user', 'user');
+
     queryBuilder.limit(dto.limit || 0);
     queryBuilder.take(dto.take || 10);
 
@@ -74,7 +76,9 @@ export class PostService {
   }
 
   async findOne(id: number) {
-    const find = await this.repository.findOneBy({ id: id });
+    const find = await this.repository.findOneBy({
+      id: id,
+    });
     if (!find) {
       throw new NotFoundException('Статья не найдена');
     }
