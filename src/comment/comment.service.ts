@@ -42,7 +42,7 @@ export class CommentService {
     return arr.map((obj) => {
       return {
         ...obj,
-        post: { id: obj.post.id },
+        post: { id: obj.post.id, title: obj.post.title },
       };
     });
   }
